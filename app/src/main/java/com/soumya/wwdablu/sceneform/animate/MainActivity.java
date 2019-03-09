@@ -2,6 +2,7 @@ package com.soumya.wwdablu.sceneform.animate;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.google.ar.core.Frame;
 import com.google.ar.core.Plane;
@@ -54,8 +55,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         for(Plane plane : frame.getUpdatedTrackables(Plane.class)) {
-            modelHelper.addObjectModel(Uri.parse("aj.sfb"));
+            modelHelper.addObjectModel("jumping.sfb");
             removeUpdateListener();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            modelHelper.animateModel("jumping.sfb", "jumping");
+                        }
+                    });
+                }
+            }, 5000);
             break;
         }
     };

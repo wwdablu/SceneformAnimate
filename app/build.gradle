@@ -38,8 +38,7 @@ dependencies {
 }
 
 
-sceneform.asset('sampledata/aj/aj.fbx',
+sceneform.asset('sampledata/jumping.fbx',
         'default',
-        'sampledata/aj/aj.sfa',
-        'src/main/assets/aj',
-        ['sampledata/aj/jumping.fbx', 'sampledata/aj/looking_around.fbx'])
+        'sampledata/jumping.sfa',
+        'src/main/assets/jumping')
