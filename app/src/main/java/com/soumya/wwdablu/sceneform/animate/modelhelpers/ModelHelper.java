@@ -56,19 +56,27 @@ public class ModelHelper {
         }
     }
 
-    public synchronized void animateModel(String modelName, String animName) {
+    public synchronized void animateModel(String modelName, int animIndex) {
         ModelRenderable modelRenderable = renderableMap.get(modelName);
         if(modelRenderable == null) {
             return;
         }
 
-        int i = modelRenderable.getAnimationDataCount();
-
-        AnimationData animData = modelRenderable.getAnimationData(0);
+        AnimationData animData = modelRenderable.getAnimationData(animIndex);
         ModelAnimator modelAnimator = new ModelAnimator(animData, modelRenderable);
 
-        modelAnimator.setRepeatCount(1);
+        modelAnimator.setRepeatCount(0);
         modelAnimator.start();
+    }
+
+    public int animCountOnModel(String modelName) {
+
+        ModelRenderable modelRenderable = renderableMap.get(modelName);
+        if(modelRenderable == null) {
+            return 0;
+        }
+
+        return modelRenderable.getAnimationDataCount();
     }
 
     private void placeObject(Anchor anchor, String modelName) {

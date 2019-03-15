@@ -1,6 +1,5 @@
 package com.soumya.wwdablu.sceneform.animate;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -15,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ArModelFragment modelFragment;
     private ModelHelper modelHelper;
+    private Handler handler;
+    private int animIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,22 @@ public class MainActivity extends AppCompatActivity {
         modelHelper.clean();
     }
 
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+
+            runOnUiThread(() -> {
+
+                int i = modelHelper.animCountOnModel("tpose.fbx");
+
+                modelHelper.animateModel("tpose.sfb", animIndex);
+                if(++animIndex != modelHelper.animCountOnModel("tpose.fbx")) {
+                    handler.postDelayed(runnable, 30000);
+                }
+            });
+        }
+    };
+
     private Scene.OnUpdateListener updateListener = frameTime -> {
 
         Frame frame = modelFragment.getArSceneView().getArFrame();
@@ -55,20 +72,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         for(Plane plane : frame.getUpdatedTrackables(Plane.class)) {
-            modelHelper.addObjectModel("jumping.sfb");
+            modelHelper.addObjectModel("tpose.sfb");
             removeUpdateListener();
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            modelHelper.animateModel("jumping.sfb", "jumping");
-                        }
-                    });
-                }
-            }, 5000);
+            handler = new Handler();
+            animIndex = 0;
+            handler.postDelayed(runnable, 5000);
             break;
         }
     };
