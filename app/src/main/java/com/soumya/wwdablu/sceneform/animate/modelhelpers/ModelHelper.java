@@ -16,6 +16,7 @@ import com.google.ar.sceneform.rendering.AnimationData;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+import com.soumya.wwdablu.sceneform.animate.ArModelFragment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,14 +27,17 @@ public class ModelHelper {
 
     private ArFragment arFragment;
     private HashMap<String, ModelRenderable> renderableMap;
+    private TransformableNode transformableNode;
+    private ArModelFragment.ModelInteraction modelInteraction;
 
-    private ModelHelper(ArFragment arFragment) {
+    private ModelHelper(ArFragment arFragment, ArModelFragment.ModelInteraction modelInteraction) {
         this.arFragment = arFragment;
         renderableMap = new HashMap<>();
+        this.modelInteraction = modelInteraction;
     }
 
-    public static ModelHelper with(@NonNull ArFragment arFragment) {
-        return new ModelHelper(arFragment);
+    public static ModelHelper with(@NonNull ArFragment arFragment, @NonNull ArModelFragment.ModelInteraction modelInteraction) {
+        return new ModelHelper(arFragment, modelInteraction);
     }
 
     public void clean() {
@@ -56,6 +60,20 @@ public class ModelHelper {
         }
     }
 
+    public synchronized void replaceObjectModel(@NonNull String modelName) {
+
+        final Uri object = Uri.parse(modelName);
+        ModelRenderable.builder()
+                .setSource(arFragment.getContext(), object)
+                .build()
+                .thenAccept(modelRenderable -> {
+                    renderableMap.put(modelName, modelRenderable);
+                    transformableNode.setRenderable(modelRenderable);
+                    animateModel(modelName, 0);
+                })
+                .exceptionally(throwable -> null);
+    }
+
     public synchronized void animateModel(String modelName, int animIndex) {
         ModelRenderable modelRenderable = renderableMap.get(modelName);
         if(modelRenderable == null) {
@@ -76,6 +94,10 @@ public class ModelHelper {
             return 0;
         }
 
+        int count = modelRenderable.getAnimationDataCount();
+        AnimationData animationData = modelRenderable.getAnimationData(0);
+        String name = modelRenderable.getAnimationData(0).getName();
+
         return modelRenderable.getAnimationDataCount();
     }
 
@@ -93,7 +115,7 @@ public class ModelHelper {
 
     private void addNodeToScene(Anchor createAnchor, ModelRenderable renderable, Uri object) {
         AnchorNode anchorNode = new AnchorNode(createAnchor);
-        TransformableNode transformableNode = new TransformableNode(arFragment.getTransformationSystem());
+        transformableNode = new TransformableNode(arFragment.getTransformationSystem());
         transformableNode.setName(object.toString());
         transformableNode.setRenderable(renderable);
         transformableNode.setParent(anchorNode);
@@ -103,7 +125,7 @@ public class ModelHelper {
         arFragment.getArSceneView().getScene().addChild(anchorNode);
 
         transformableNode.setOnTapListener((hitTestResult, motionEvent) -> {
-            //Perform callback action, like bark
+            modelInteraction.onClick();
         });
         transformableNode.select();
     }

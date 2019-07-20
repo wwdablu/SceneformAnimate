@@ -10,11 +10,12 @@ import com.soumya.wwdablu.sceneform.animate.modelhelpers.ModelHelper;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ArModelFragment.ModelInteraction {
 
     private ArModelFragment modelFragment;
     private ModelHelper modelHelper;
-    private Handler handler;
+
+    String[] models = {"dance.sfb", "die.sfb", "jump.sfb", "look.sfb", "wave.sfb"};
     private int animIndex = 0;
 
     @Override
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         modelFragment.getArSceneView().getScene().addOnUpdateListener(updateListener);
 
         if(modelHelper == null) {
-            modelHelper = ModelHelper.with(modelFragment);
+            modelHelper = ModelHelper.with(modelFragment, this);
         }
     }
 
@@ -48,21 +49,18 @@ public class MainActivity extends AppCompatActivity {
         modelHelper.clean();
     }
 
-    private Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
+    @Override
+    public void onClick() {
+        runOnUiThread(() -> {
 
-            runOnUiThread(() -> {
+            if(animIndex >= models.length) {
+                animIndex = 0;
+            }
 
-                int i = modelHelper.animCountOnModel("tpose.fbx");
-
-                modelHelper.animateModel("tpose.sfb", animIndex);
-                if(++animIndex != modelHelper.animCountOnModel("tpose.fbx")) {
-                    handler.postDelayed(runnable, 30000);
-                }
-            });
-        }
-    };
+            modelHelper.replaceObjectModel(models[animIndex]);
+            animIndex++;
+        });
+    }
 
     private Scene.OnUpdateListener updateListener = frameTime -> {
 
@@ -72,12 +70,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         for(Plane plane : frame.getUpdatedTrackables(Plane.class)) {
-            modelHelper.addObjectModel("tpose.sfb");
-            removeUpdateListener();
 
-            handler = new Handler();
+            removeUpdateListener();
+            modelHelper.addObjectModel("look.sfb");
             animIndex = 0;
-            handler.postDelayed(runnable, 5000);
             break;
         }
     };

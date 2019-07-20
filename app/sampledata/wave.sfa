@@ -1,0 +1,125 @@
+{
+  animations: [
+    {
+      clips: [
+        {
+          name: 'mixamo.com',
+        },
+      ],
+      path: 'sampledata/wave.fbx',
+    },
+  ],
+  materials: [
+    {
+      name: 'Vanguard_VisorMat',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: 'vanguard_diffuse',
+        },
+        {
+          normalMap: 'vanguard_normal',
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+    {
+      name: 'VanguardBodyMat',
+      parameters: [
+        {
+          baseColor: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          baseColorMap: 'vanguard_diffuse',
+        },
+        {
+          normalMap: 'vanguard_normal',
+        },
+        {
+          interpolatedColor: null,
+        },
+        {
+          metallic: 0,
+        },
+        {
+          metallicMap: null,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          roughnessMap: null,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/fbx_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+      'BoneIndices',
+      'BoneWeights',
+    ],
+    collision: {},
+    file: 'sampledata/wave.fbx',
+    name: 'wave',
+    recenter: 'root',
+    sclae : 0.15
+  },
+  samplers: [
+    {
+      file: 'sampledata/wave.fbm/vanguard_specular.png',
+      name: 'vanguard_specular',
+      pipeline_name: 'wave.fbm/vanguard_specular.png',
+    },
+    {
+      file: 'sampledata/wave.fbm/vanguard_diffuse.png',
+      name: 'vanguard_diffuse',
+      pipeline_name: 'wave.fbm/vanguard_diffuse.png',
+    },
+    {
+      file: 'sampledata/wave.fbm/vanguard_normal.png',
+      name: 'vanguard_normal',
+      params: {
+        usage_type: 'Normal',
+      },
+      pipeline_name: 'wave.fbm/vanguard_normal.png',
+    },
+  ],
+  version: '0.54:2',
+}
