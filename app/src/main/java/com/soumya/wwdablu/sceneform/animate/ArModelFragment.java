@@ -8,6 +8,10 @@ import androidx.annotation.Nullable;
 
 public class ArModelFragment extends ArFragment {
 
+    public interface ModelInteraction {
+        void onClick();
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

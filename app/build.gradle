@@ -27,19 +27,32 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
-    implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.7.0'
-    implementation "com.google.ar.sceneform:animation:1.7.0"
-
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.10.0'
+    implementation "com.google.ar.sceneform:animation:1.10.0"
 }
 
-
-sceneform.asset('sampledata/aj/aj.fbx',
+sceneform.asset('sampledata/jump.fbx',
         'default',
-        'sampledata/aj/aj.sfa',
-        'src/main/assets/aj',
-        ['sampledata/aj/jumping.fbx', 'sampledata/aj/looking_around.fbx'])
+        'sampledata/jump.sfa',
+        'src/main/assets/jump')
+
+sceneform.asset('sampledata/wave.fbx',
+        'default',
+        'sampledata/wave.sfa',
+        'src/main/assets/wave')
+
+sceneform.asset('sampledata/dance.fbx',
+        'default',
+        'sampledata/dance.sfa',
+        'src/main/assets/dance')
+
+sceneform.asset('sampledata/die.fbx',
+        'default',
+        'sampledata/die.sfa',
+        'src/main/assets/die')
+
+sceneform.asset('sampledata/look.fbx',
+        'default',
+        'sampledata/look.sfa',
+        'src/main/assets/look')
